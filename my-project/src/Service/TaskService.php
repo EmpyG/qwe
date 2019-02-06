@@ -7,9 +7,7 @@ use App\Exceptions\TaskAlreadyExistsException;
 use App\Exceptions\TaskNotFoundException;
 use App\Repository\TaskRepository;
 use DateTime;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\PersistentCollection;
 
 /**
  * Task CRUD
@@ -19,8 +17,13 @@ class TaskService
     private $taskRepository;
     private $entityManager;
 
+    public const TO_DO_STATUS = 1;
+    public const WIP_STATUS = 2;
+    public const FINISH_STATUS = 3;
+
     private const NOT_FOUND_MESSAGE = 'Task was not found.';
-    private const ALREADY_EXISTS = 'Task with this name already exists.';
+    public const ALREADY_EXISTS = 'Task with this name already exists.';
+
 
     /**
      * TaskService constructor.
@@ -76,6 +79,20 @@ class TaskService
             throw new TaskNotFoundException(self::NOT_FOUND_MESSAGE);
         }
         return $task;
+    }
+
+    /**
+     * @param $status
+     * @return array|null
+     * @throws TaskNotFoundException
+     */
+    public function readByStatus($status): ?array
+    {
+        $tasks = $this->taskRepository->findBy(['status' => $status]);
+        if (count($tasks) < 1) {
+            throw new TaskNotFoundException(self::NOT_FOUND_MESSAGE);
+        }
+        return $tasks;
     }
 
     /**

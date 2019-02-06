@@ -3,50 +3,96 @@
 {% block title %}Kanfony Board{% endblock %}
 
 {% block body %}
-    <style>
+    <h1>Task Board:</h1>
+    <section class="content">
+        <section class="box" id="todo">
+            <span class="column-name">To-Do</span>
+            {% for toDo in toDos %}
+                <div class="task">
+                    <h2>{{ toDo.name }}</h2>
+                    <span class="data">{{ toDo.description }}</span>
+                    <span class="data">{{ toDo.deadline|date('Y-m-d H:i:s') }}</span>
+                </div>
+            {% endfor %}
+        </section>
 
-    </style>
-    <h1>Tasks:</h1>
-    <section class="con">
-        {% for task in tasks %}
-            {% if task.status==1 %}
-                <div class="box">
-                    <div>
-                        <span>To-Do</span>
-                        <h2>{{ task.name }}</h2>
-                        <span>{{ task.description }}</span>
-                        <span>{{ task.deadline|date('Y-m-d H:i:s') }}</span>
-                        <br/>
-                        <br/>
-                    </div>
+        <section class="box" id="wip">
+            <span class="column-name">Work in Progress</span>
+            {% for wip in wips %}
+                <div class="task">
+                    <h2>{{ wip.name }}</h2>
+                    <span class="data">{{ wip.description }}</span>
+                    <span class="data">{{ wip.deadline|date('Y-m-d H:i:s') }}</span>
                 </div>
-            {% endif %}
-            {% if task.status==2 %}
-                <div class="box">
-                    <div>
-                        <span>WIP</span>
-                        <h2>{{ task.name }}</h2>
-                        <span>{{ task.description }}</span>
-                        <span></span>
-                        <span>{{ task.deadline|date('Y-m-d H:i:s') }}</span>
-                        <br/>
-                        <br/>
-                    </div>
+            {% endfor %}
+        </section>
+
+        <section class="box" id="finished">
+            <span class="column-name">Finished</span>
+            {% for finish in finishs %}
+                <div class="task">
+                    <h2>{{ finish.name }}</h2>
+                    <span class="data">{{ finish.description }}</span>
+                    <span class="data">{{ finish.deadline|date('Y-m-d H:i:s') }}</span>
                 </div>
-            {% endif %}
-            {% if task.status==3 %}
-                <div class="box">
-                    <div>
-                        <span>Finished</span>
-                        <h2>{{ task.name }}</h2>
-                        <span>{{ task.description }}</span>
-                        <span></span>
-                        <span>{{ task.deadline|date('Y-m-d H:i:s') }}</span>
-                        <br/>
-                        <br/>
-                    </div>
-                </div>
-            {% endif %}
-        {% endfor %}
+            {% endfor %}
+        </section>
     </section>
+
+
+
+    <div class="box">
+        <form action="{{ path('test') }}" method="post" class="form">
+            <div class="">
+                <h2>Add</h2>
+                <label class="" for="name">Please name your task: </label>
+                <input class="" type="text" placeholder="Make some progress" id="name" name="name"
+                       required>
+            </div>
+            <div class="">
+                <label class="" for="desc">Please describe your task: </label>
+                <input class="" type="text" placeholder="Make some progress" id="desc" name="description"
+                       required>
+            </div>
+            <div class="">
+                <label class="" for="dline">Enter the task's deadline: </label>
+                <input class="" type="datetime-local" placeholder="Soon" id="dline" name="deadline" required>
+            </div>
+            <label class="" for="task-status">Status of the task:</label>
+            <select class="" name="status" id="task-status">
+                <option value="" disabled>--sup bich--</option>
+                <option value="1">To-Do</option>
+                <option value="2">Work in Progress</option>
+                <option value="3">Finished</option>
+            </select>
+            <div class="">
+                <input class="" type="submit" value="Add Task">
+            </div>
+        </form>
+    </div>
+
+    {% for message in app.flashes('success') %}
+        <div class="box__message">
+            {{ message }}
+            <button type="button" class="cross" id="hideButton">&times;</button>
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div class="box__message">
+            {{ message }}
+            <button type="button" class="cross" id="hideButton">&times;</button>
+        </div>
+    {% endfor %}
+
+    <script>
+        const className = 'box__message--hide';
+        const block = document.getElementById('hideButton');
+
+        block.addEventListener('click', () => {
+            block.parentElement.classList.add(className);
+        });
+    </script>
+
 {% endblock %}
+

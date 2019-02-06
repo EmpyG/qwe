@@ -15,7 +15,12 @@ h1 {
     text-align: center;
 }
 
-.con {
+.column-name {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.content {
     display: flex;
 }
 
@@ -28,4 +33,49 @@ h1 {
     padding: 5px;
     width: 30%;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.box__message {
+    display: block;
+    justify-content: center;
+    background: #ddd;
+    text-align: center;
+    margin: 1% auto auto;
+    padding: 5px;
+    width: 32%;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    position: relative;
+}
+
+.box__message--hide {
+    display: none;
+}
+
+.data {
+    display: block;
+}
+
+.task {
+    margin: 10px;
+    display: block;
+    border: #333333 solid;
+    border-radius: 15px;
+    background: #b9b9b9;
+}
+
+.cross {
+    position: absolute;
+    right: 5px;
+    top: 2px;
+    height: auto;
+    min-height: auto;
+    font-size: 1.5em;
+    background: none;
+    color: #000;
+    border: none;
+}
+
+.cross:hover {
+    color: #f00;
+    cursor: pointer;
 }
