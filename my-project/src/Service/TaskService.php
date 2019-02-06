@@ -7,7 +7,9 @@ use App\Exceptions\TaskAlreadyExistsException;
 use App\Exceptions\TaskNotFoundException;
 use App\Repository\TaskRepository;
 use DateTime;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * Task CRUD
@@ -44,13 +46,12 @@ class TaskService
      */
     public function create(string $name, string $description, string $deadline, int $status): Task
     {
-        $task = new Task();
-
-        $dateTime = new DateTime($deadline);
-
         if ($this->taskRepository->count(['name' => $name]) > 0) {
             throw new TaskAlreadyExistsException(self::ALREADY_EXISTS);
         }
+
+        $task = new Task();
+        $dateTime = new DateTime($deadline);
 
         $task->setName($name)
              ->setDescription($description)
@@ -78,6 +79,21 @@ class TaskService
     }
 
     /**
+     * @return Task[]
+     * @throws TaskNotFoundException
+     */
+    public function readAll(): array
+    {
+        $tasks = $this->taskRepository->findAll();
+        if (count($tasks) === 0) {
+            throw new TaskNotFoundException(self::NOT_FOUND_MESSAGE);
+
+        }
+        return $tasks;
+    }
+
+
+    /**
      * @param int    $id
      * @param string $description
      * @param string $deadline
@@ -87,8 +103,13 @@ class TaskService
      * @throws \Doctrine\ORM\ORMException
      * @throws \Exception
      */
-    public function update(int $id, string $description, string $deadline, int $status): Task
-    {
+    public
+    function update(
+        int $id,
+        string $description,
+        string $deadline,
+        int $status
+    ): Task {
         $dateTime = new DateTime($deadline);
 
         $task = $this->read($id);
@@ -106,9 +127,12 @@ class TaskService
     /**
      * @param int $id
      * @throws \Doctrine\ORM\ORMException
+     * @throws TaskNotFoundException
      */
-    public function delete(int $id): void
-    {
+    public
+    function delete(
+        int $id
+    ): void {
         $task = $this->read($id);
         $this->entityManager->remove($task);
         $this->entityManager->flush();

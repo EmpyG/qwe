@@ -1,62 +1,52 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TaskController!{% endblock %}
+{% block title %}Kanfony Board{% endblock %}
 
 {% block body %}
     <style>
-        .example-wrapper {
-            margin: 1em auto;
-            max-width: 800px;
-            width: 95%;
-            font: 18px/1.5 sans-serif;
-        }
 
-        .example-wrapper code {
-            background: #F5F5F5;
-            padding: 2px 6px;
-        }
     </style>
-
-    <div class="example-wrapper">
-        <h1>Hello {{ controller_name }}! ✅</h1>
-
-        This friendly message is coming from:
-        <ul>
-            <li>Your controller at <code><a
-                            href="{{ 'C:/xampp/htdocs/qwe/my-project/src/Controller/TaskController.php'|file_link(0) }}">src/Controller/TaskController.php</a></code>
-            </li>
-            <li>Your template at <code><a
-                            href="{{ 'C:/xampp/htdocs/qwe/my-project/templates/task/index.html.twig'|file_link(0) }}">templates/task/index.html.twig</a></code>
-            </li>
-        </ul>
-    </div>
-    {{ form(form) }}
-
-
-    {#<form action="" method="post" class="form">#}
-    {#<div class="">#}
-    {#<span>Add</span>#}
-    {#<label class="form__label" for="name">Please name your task: </label>#}
-    {#<input class="form__input" type="text" placeholder="Enter name" id="name" name="name"#}
-    {#required>#}
-    {#<label class="form__label" for="desc">Please describe your task: </label>#}
-    {#<input class="form__input" type="text" placeholder="Make some progress" id="desc" name="description"#}
-    {#required>#}
-    {#</div>#}
-    {#<div class="">#}
-    {#<label class="form__label" for="dline">Enter the task's deadline: </label>#}
-    {#<input class="form__input" type="datetime-local" placeholder="Soon" id="dline" name="deadline" required>#}
-    {#</div>#}
-    {#<label class="form__label" for="task-status">Status of the task:</label>#}
-    {#<select class="form__input" name="status" id="task-status">#}
-    {#<option value="" disabled>--sup bich--</option>#}
-    {#<option value="1">To-Do</option>#}
-    {#<option value="2">Work in Progress</option>#}
-    {#<option value="3">Finished</option>#}
-    {#</select>#}
-    {#<div class="">#}
-    {#<input class="form__input button" type="submit" value="Add Task">#}
-    {#</div>#}
-    {#</form>#}
-
+    <h1>Tasks:</h1>
+    <section class="con">
+        {% for task in tasks %}
+            {% if task.status==1 %}
+                <div class="box">
+                    <div>
+                        <span>To-Do</span>
+                        <h2>{{ task.name }}</h2>
+                        <span>{{ task.description }}</span>
+                        <span>{{ task.deadline|date('Y-m-d H:i:s') }}</span>
+                        <br/>
+                        <br/>
+                    </div>
+                </div>
+            {% endif %}
+            {% if task.status==2 %}
+                <div class="box">
+                    <div>
+                        <span>WIP</span>
+                        <h2>{{ task.name }}</h2>
+                        <span>{{ task.description }}</span>
+                        <span></span>
+                        <span>{{ task.deadline|date('Y-m-d H:i:s') }}</span>
+                        <br/>
+                        <br/>
+                    </div>
+                </div>
+            {% endif %}
+            {% if task.status==3 %}
+                <div class="box">
+                    <div>
+                        <span>Finished</span>
+                        <h2>{{ task.name }}</h2>
+                        <span>{{ task.description }}</span>
+                        <span></span>
+                        <span>{{ task.deadline|date('Y-m-d H:i:s') }}</span>
+                        <br/>
+                        <br/>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </section>
 {% endblock %}
