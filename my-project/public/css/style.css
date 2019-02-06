@@ -64,18 +64,33 @@ h1 {
 }
 
 .cross {
+    background: none;
+    color: #000;
+    border: none;
     position: absolute;
     right: 5px;
     top: 2px;
     height: auto;
     min-height: auto;
     font-size: 1.5em;
-    background: none;
-    color: #000;
-    border: none;
 }
 
 .cross:hover {
     color: #f00;
     cursor: pointer;
+}
+
+.butin {
+    background: #387ace;
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    font-weight: bold;
+    width: 50%;
+    transition-duration: 0.3s;
+}
+
+.butin:hover {
+    background: #295f9b;
+    border-radius: 14px;
 }
