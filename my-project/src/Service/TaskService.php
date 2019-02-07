@@ -96,6 +96,20 @@ class TaskService
     }
 
     /**
+     * @param $name
+     * @return array|null
+     * @throws TaskNotFoundException
+     */
+    public function readByName($name): ?array
+    {
+        $task = $this->taskRepository->findBy(['name' => $name]);
+        if (count($task) < 1) {
+            throw new TaskNotFoundException(self::NOT_FOUND_MESSAGE);
+        }
+        return $task;
+    }
+
+    /**
      * @return Task[]
      * @throws TaskNotFoundException
      */
@@ -120,13 +134,8 @@ class TaskService
      * @throws \Doctrine\ORM\ORMException
      * @throws \Exception
      */
-    public
-    function update(
-        int $id,
-        string $description,
-        string $deadline,
-        int $status
-    ): Task {
+    public function update(int $id, string $description, string $deadline, int $status): Task
+    {
         $dateTime = new DateTime($deadline);
 
         $task = $this->read($id);
@@ -146,10 +155,8 @@ class TaskService
      * @throws \Doctrine\ORM\ORMException
      * @throws TaskNotFoundException
      */
-    public
-    function delete(
-        int $id
-    ): void {
+    public function delete(int $id): void
+    {
         $task = $this->read($id);
         $this->entityManager->remove($task);
         $this->entityManager->flush();

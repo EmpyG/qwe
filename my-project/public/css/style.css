@@ -63,6 +63,14 @@ h1 {
     background: #b9b9b9;
 }
 
+.taskoptions {
+    display: none;
+}
+
+.taskoptions--show {
+    display: block;
+}
+
 .cross {
     background: none;
     color: #000;
